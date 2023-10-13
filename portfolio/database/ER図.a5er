@@ -1,0 +1,122 @@
+﻿# A5:ER FORMAT:17
+# A5:ER ENCODING:UTF8
+# A5:ER Mk-1 Copyright © 2007 m.matsubara
+# A5:SQL Mk-2 Version 2.18.4 Copyright © 1997 - 2023 m.matsubara
+#  https://a5m2.mmatsubara.com
+
+[Manager]
+ProjectName=
+Author=
+MaxEntityRowShow=1000
+ReadOnlyRecommend=0
+Page=Main
+PageInfo="Main",2,"A3Landscape",$FFFFFF
+LogicalView=1
+DecodeDomain=0
+ViewModePageIndividually=1
+ViewMode=2
+ViewFormat=0
+UseNondependenceDashLine=0
+FontName=Tahoma
+FontSize=6
+PaperSize=A4Landscape
+HeaderLeft=
+HeaderCenter=
+HeaderRight=
+FooterLeft=
+FooterCenter=
+FooterRight=
+ShowPageoutRelation=1
+DefaultPkName=%0:s_PKC
+DefaultPkIndexName=%0:s_PKI
+DefaultIndexName=%0:s_IX%1:d
+DefaultFkName=%0:s_FK%1:d
+SqlSeparator=0
+UpperCaseKeyword=0
+ShowTag=1
+ShowCommonAttributes=0
+BugFixEntityWidth=1
+
+[Entity]
+PName=department
+LName=department
+Comment=
+TableOption=
+Page=Main
+Left=50
+Top=50
+Field="department_id","department_id","INTEGER","NOT NULL",0,"","",$FFFFFFFF,""
+Field="department_name","department_name","TEXT","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME",,,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",50,50
+ZOrder=-1
+
+[Entity]
+PName=hospital
+LName=hospital
+Comment=
+TableOption=
+Page=Main
+Left=350
+Top=50
+Field="hospital_id","hospital_id","INTEGER","NOT NULL",0,"","",$FFFFFFFF,""
+Field="hospital_name","hospital_name","TEXT","NOT NULL",,"","",$FFFFFFFF,""
+Field="department_id","department_id","INTEGER","NOT NULL",,"","",$FFFFFFFF,""
+Field="id","id","INTEGER","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME",,,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",350,50
+ZOrder=-2
+
+[Entity]
+PName=medicine
+LName=medicine
+Comment=
+TableOption=
+Page=Main
+Left=650
+Top=50
+Field="medicine_id","medicine_id","INTEGER","NOT NULL",0,"","",$FFFFFFFF,""
+Field="medicine_name","medicine_name","TEXT","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME",,,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",650,50
+ZOrder=-3
+
+[Entity]
+PName=users
+LName=users
+Comment=
+TableOption=
+Page=Main
+Left=950
+Top=50
+Field="id","id","INTEGER","NOT NULL",0,"","",$FFFFFFFF,""
+Field="name","name","VARCHAR()","NOT NULL",,"","",$FFFFFFFF,""
+Field="email","email","VARCHAR()","NOT NULL",,"","",$FFFFFFFF,""
+Field="email_verified_at","email_verified_at","DATETIME",,,"","",$FFFFFFFF,""
+Field="password","password","VARCHAR()","NOT NULL",,"","",$FFFFFFFF,""
+Field="remember_token","remember_token","VARCHAR()",,,"","",$FFFFFFFF,""
+Field="current_team_id","current_team_id","INTEGER",,,"","",$FFFFFFFF,""
+Field="profile_photo_path","profile_photo_path","VARCHAR()",,,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME",,,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME",,,"","",$FFFFFFFF,""
+Field="two_factor_secret","two_factor_secret","TEXT",,,"","",$FFFFFFFF,""
+Field="two_factor_recovery_codes","two_factor_recovery_codes","TEXT",,,"","",$FFFFFFFF,""
+Field="two_factor_confirmed_at","two_factor_confirmed_at","DATETIME",,,"","",$FFFFFFFF,""
+Index=users_email_unique=1,email
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",950,50
+ZOrder=-4
