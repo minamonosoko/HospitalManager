@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB; // DBファサードのuseが必要
 use Carbon\Carbon;  // 時刻
 
-class MedicineTableSeeder extends Seeder
+class TreatmentsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,24 +18,13 @@ class MedicineTableSeeder extends Seeder
         $params = 
         [
             [
-                'medicine_name' => 'ロキソニン',
-                'hospital_id' => '1',
-                'medicine_stock' => '5'
+                'treatment_content' => '初診',
             ],
             [
-                'medicine_name' => 'レミカット',
-                'hospital_id' => '2',
-                'medicine_stock' => '6'
+                'treatment_content' => '定期受診',
             ],
             [
-                'medicine_name' => 'アスピリン',
-                'hospital_id' => '1',
-                'medicine_stock' => '7'
-            ],
-            [
-                'medicine_name' => 'イリボー',
-                'hospital_id' => '3',
-                'medicine_stock' => '8'
+                'treatment_content' => '検査',
             ],
         ];
 
@@ -44,7 +33,7 @@ class MedicineTableSeeder extends Seeder
         foreach($params as $param){
             $param['created_at'] = $now;
             $param['updated_at'] = $now;
-            DB::table('medicines')->insert($param);
+            DB::table('treatments')->insert($param);
         }    
     }
 }

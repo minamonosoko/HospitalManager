@@ -32,7 +32,6 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/hospital', function () {
-        return view('hospital');
-    })->name('hospital');
+    Route::get('/hospital', 'App\Http\Controllers\HospitalController@index')->name('hospital');
+    Route::post('/hospital/update', 'App\Http\Controllers\HospitalController@update')->name('hospital.update');
 });

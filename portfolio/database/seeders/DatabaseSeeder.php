@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call(DepartmentTableSeeder::class);
-        $this->call(MedicineTableSeeder::class);
+        $this->call(TreatmentsTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
         $this->call(HospitalTableSeeder::class);
+        $this->call(MedicineTableSeeder::class);
+
     }
 }

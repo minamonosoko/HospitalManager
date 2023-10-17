@@ -14,8 +14,15 @@ return new class extends Migration
         Schema::create('hospitals', function (Blueprint $table) {
             $table->id('hospital_id');
             $table->text('hospital_name');
+            $table->text('hospital_phone_number');
+            $table->text('hospital_address');
+            $table->dateTime('previous_attend', $precision = 0);
+            $table->dateTime('next_attend', $precision = 0);
             $table->foreignId('department_id')->constrained('departments', 'department_id');
             $table->foreignId('id')->constrained('users', 'id');
+            $table->foreignId('previous_treatment_id')->constrained('treatments', 'treatment_id');
+            $table->foreignId('next_treatment_id')->constrained('treatments', 'treatment_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

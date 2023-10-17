@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8">
         <title>Hospital Manager</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
     </head>
     <body>
-        <div class="vh-100">
+        <div class="vh-100 col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <a class="navbar-bland text-black text-decoration-none fw-bold" href="#">通院管理アプリ</a>
