@@ -33,5 +33,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/hospital', 'App\Http\Controllers\HospitalController@index')->name('hospital');
-    Route::post('/hospital/update', 'App\Http\Controllers\HospitalController@update')->name('hospital.update');
+    Route::post('/hospital/action', 'App\Http\Controllers\HospitalController@action')->name('hospital.action');
+    Route::post('/hospital/create', 'App\Http\Controllers\HospitalController@create')->name('hospital.create');
+
 });

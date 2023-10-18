@@ -1,142 +1,227 @@
 @extends('base')
 
 @section('content')
+
 @if(config('app.debug'))
+<ul>
     @foreach(session('post_data', []) as $data)
-    <li>{{ $data['key'] }}: {{ $data['value'] }}</li>
+    <li>
+        {{ $data['key'] }}: {{ is_array($data['value']) ? json_encode($data['value']) : $data['value'] }}
+    </li>
     @endforeach
+</ul>
 @endif
 
 <div class="main-container">
     <div class="d-flex">
         <div class="accordion w-100">
-            @foreach($hospitals as $hospital)
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading-1">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#accordion-body-1" aria-expanded="true" aria-controls="accordion-body-1">
-                            <div>
-                                <div class="fs-3">
-                                    {{ $hospital->hospital_name }}
-                                </div>
-                                @foreach($departments as $department)
-                                    @if($hospital->department_id === $department->department_id)
-                                        {{ $department->department_name }}
-                                    @endif
-                                @endforeach
+            @foreach($hospitals as $key => $val)
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-{{ $key }}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordion-body-{{ $key }}" aria-expanded="true"
+                        aria-controls="accordion-body-1">
+                        <div>
+                            <div class="fs-3">
+                                {{ $val->hospital_name }}
                             </div>
-                        </button>
-                    </h2>
-                    <form method="POST" action="{{ route('hospital.update') }}">
-                        @csrf
-                        <div id="accordion-body-1" class="accordion-collapse collapse show" aria-labelledby="heading-1">
-                            <div class="accordion-body">
-                                <div>
-                                    <div class="fs-5">
-                                        ■通院日時
+                            @foreach($departments as $department)
+                            @if($val->department_id === $department->department_id)
+                            {{ $department->department_name }}
+                            @endif
+                            @endforeach
+                        </div>
+                    </button>
+                </h2>
+                <form method="POST" action="{{ route('hospital.action') }}" accept-charset="UTF-8">
+                    @csrf
+                    <input type="hidden" name="hospital_id" value="{{ $val->hospital_id }}">
+                    <div id="accordion-body-{{ $key }}" class="accordion-collapse collapse" aria-labelledby="heading-1">
+                        <div class="accordion-body">
+                            <div>
+                                <div class="fs-5">
+                                    ■通院日時
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        前回通院日
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="text-left">
-                                            前回通院日
-                                        </div>
-                                        <div class="text-right">
-                                            <input type="datetime-local" id="previous-attend-1" name="previous-attend-1"
-                                                value="{{ $hospital->previous_attend }}">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="text-left">
-                                            次回通院日
-                                        </div>
-                                        <div class="text-right">
-                                            <input type="datetime-local" id="next-attend-1" name="next-attend-1"
-                                                value="{{ $hospital->next_attend }}">
-                                        </div>
+                                    <div class="text-right">
+                                        <input type="datetime-local" id="attend-previous-{{ $key }}"
+                                            name="attend_previous" value="{{ $val->previous_attend }}">
                                     </div>
                                 </div>
-                                <hr />
-                                <div>
-                                    <div class="fs-5">
-                                        ■治療内容
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        次回通院日
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="text-left">
-                                            前回治療内容
-                                        </div>
-                                        <div class="text-right">
-                                            <select name="treatment-previous" class="form-select form-select-sm" aria-label="Default select example">
-                                                <option>選択してください</option>
-                                                <option value="1" {{ $hospital->previous_treatment_id == 1 ? 'selected' : '' }}>初診</option>
-                                                <option value="2" {{ $hospital->previous_treatment_id == 2 ? 'selected' : '' }}>定期受診</option>
-                                                <option value="3" {{ $hospital->previous_treatment_id == 3 ? 'selected' : '' }}>検査</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="text-left">
-                                            次回治療内容
-                                        </div>
-                                        <div class="text-right">
-                                            <select name="treatment-next" class="form-select form-select-sm" aria-label="Default select example">
-                                                <option>選択してください</option>
-                                                <option value="1" {{ $hospital->next_treatment_id == 1 ? 'selected' : '' }}>初診</option>
-                                                <option value="2" {{ $hospital->next_treatment_id == 2 ? 'selected' : '' }}>定期受診</option>
-                                                <option value="3" {{ $hospital->next_treatment_id == 3 ? 'selected' : '' }}>検査</option>
-                                            </select>
-                                        </div>
+                                    <div class="text-right">
+                                        <input type="datetime-local" id="attend-next-{{ $key }}" name="attend_next"
+                                            value="{{ $val->next_attend }}">
                                     </div>
                                 </div>
-                                <hr />
-                                <div>
-                                    <div class="fs-5">
-                                        ■服薬内容
+                            </div>
+                            <hr />
+                            <div>
+                                <div class="fs-5">
+                                    ■治療内容
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        前回治療内容
                                     </div>
-                                    @foreach($medicines as $medicine)
-                                        @if($hospital->hospital_id === $medicine->hospital_id)
-                                            <div class="d-flex justify-content-between">
-                                                <div class="text-left">
-                                                    {{ $medicine->medicine_name }}
-                                                </div>
-                                                <div class="text-right">
-                                                    <input type="number" name="medicine-1-1" class="form-control" id="input-medicine-1-1"
-                                                        step="0.5" value="{{ $medicine->medicine_stock }}">
-                                                </div>
+                                    <div class="text-right">
+                                        <select name="treatment_previous" class="form-select form-select-sm"
+                                            aria-label="Default select example">
+                                            <option>選択してください</option>
+                                            <option value="1" {{ $val->previous_treatment_id == 1 ? 'selected' : ''
+                                                }}>初診</option>
+                                            <option value="2" {{ $val->previous_treatment_id == 2 ? 'selected' : ''
+                                                }}>定期受診</option>
+                                            <option value="3" {{ $val->previous_treatment_id == 3 ? 'selected' : ''
+                                                }}>検査</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        次回治療内容
+                                    </div>
+                                    <div class="text-right">
+                                        <select name="treatment_next" class="form-select form-select-sm"
+                                            aria-label="Default select example">
+                                            <option>選択してください</option>
+                                            <option value="1" {{ $val->next_treatment_id == 1 ? 'selected' : '' }}>初診
+                                            </option>
+                                            <option value="2" {{ $val->next_treatment_id == 2 ? 'selected' : '' }}>定期受診
+                                            </option>
+                                            <option value="3" {{ $val->next_treatment_id == 3 ? 'selected' : '' }}>検査
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div>
+                                <div class="fs-5">
+                                    ■服薬内容
+                                </div>
+                                @foreach($medicines as $key2 => $val2)
+                                @if($val->hospital_id === $val2->hospital_id)
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        <input type="text" name="medicine_name[{{ $val2->medicine_id }}]"
+                                            value="{{ $val2->medicine_name }}" accept-charset="UTF-8">
+                                    </div>
+                                    <div class="text-right col-1">
+                                        <input type="number" name="medicine[{{ $val2->medicine_id }}]"
+                                            class="form-control form-control-sm" id="input-medicine-{{ $key2 }}"
+                                            step="0.5" value="{{ $val2->medicine_stock }}" style="">
+                                    </div>
+                                </div>
+                                @endif
+                                @endforeach
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        <input type="text" name="medicine_new_name" placeholder="新しい薬の名前を入力"
+                                            accept-charset="UTF-8">
+                                    </div>
+                                    <div class="text-right col-1">
+                                        <input type="number" name="medicine_new_stock"
+                                            class="form-control form-control-sm" id="input-medicine-new-name" step="0.5"
+                                            value="0" style="">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div>
+                                <div class="fs-5">
+                                    ■病院情報
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        電話番号
+                                    </div>
+                                    <div class="text-right col-2">
+                                        <input type="tel" name="phone_number" class="form-control form-control-sm"
+                                            placeholder="電話番号を入力" value="{{ $val->hospital_phone_number }}">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        住所
+                                    </div>
+                                    <div class="text-right col-4">
+                                        <input type="text" name="address" class="form-control form-control-sm"
+                                            id="input-address-{{ $key }}" aria-describedby="address"
+                                            value="{{ $val->hospital_address }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-sm" name="action" value="update">更新</button>
+                                <button type="submit" class="btn btn-primary btn-sm" name="action" value="delete">削除</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @endforeach
+            <div class="create-wrapper">
+                <form method="POST" action="{{ route('hospital.create') }}" accept-charset="UTF-8">
+                    @csrf
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-register">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion-body-register" aria-expanded="true"
+                                aria-controls="accordion-body-register">
+                                <div>
+                                    <div class="fs-3">
+                                        新しい病院を登録
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div>
+                            <div id="accordion-body-register" class="accordion-collapse collapse"
+                                aria-labelledby="heading-register">
+                                <div class="accordion-body">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="text-left">
+                                                病院名
                                             </div>
-                                        @endif
-                                    @endforeach
-                                </div>
-                                <hr />
-                                <div>
-                                    <div class="fs-5">
-                                        ■病院情報
+                                            <div class="text-right">
+                                                <input type="text" id="attend-previous-register" name="hospital_name"
+                                                    placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="text-left">
+                                                診療科
+                                            </div>
+                                            <div class="text-right">
+                                                <select name="department_id" class="form-select form-select-sm"
+                                                    aria-label="department">
+                                                    <option selected value="0">選択してください</option>
+                                                    @foreach($departments as $key => $val)
+                                                    <option value="{{ $val->department_id }}">{{ $val->department_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary btn-sm">新規登録</button>
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="text-left">
-                                            電話番号
-                                        </div>
-                                        <div class="text-right">
-                                            <input type="tel" name="tel" placeholder="電話番号を入力" value="{{ $hospital->hospital_phone_number }}">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="text-left">
-                                            住所
-                                        </div>
-                                        <div class="text-right">
-                                            <input type="text" class="form-control" id="input-address-1"
-                                                aria-describedby="emailHelp" value="{{ $hospital->hospital_address }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <div>
-                                    <button type="submit" class="btn btn-primary btn-sm">更新</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-            @endforeach
+
+                    </div>
+                </form>
+            </div><!-- .create-wrapper -->
         </div>
     </div>
 </div><!-- .main-container -->

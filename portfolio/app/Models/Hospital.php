@@ -9,13 +9,45 @@ class Hospital extends Model
 {
     use HasFactory;
 
-    // public function medicine()
-    // {
-    //     return $this->belongsTo(Medicine::class, 'hospital_id', 'hospital_id');
-    // }
+    // テーブル名
+    protected $table = 'hospitals';
 
-    public function medicines()
+    // 主キー
+    protected $primaryKey = 'hospital_id';
+
+    // 登録・更新可能カラム
+    protected $fillable = [
+        'hospital_name',
+        'hospital_phone_number',
+        'hospital_address',
+        'previous_attend',
+        'next_attend',
+        'department_id',
+        'id',
+        'previous_treatment_id',
+        'next_treatment_id',
+        'flag_delete',
+        'updated_at',
+    ];
+
+    public function updateHospital($post_data)
     {
-        return $this->hasMany(Medicine::class, 'hospital_id');
+        $this->update([
+            'hospital_phone_number' => $post_data['phone_number'],
+            'hospital_address' => $post_data['address'],
+            'previous_attend' => $post_data['attend_previous'],
+            'next_attend' => $post_data['attend_next'],
+            'previous_treatment_id' => $post_data['treatment_previous'],
+            'next_treatment_id' => $post_data['treatment_next'],
+        ]);
+    }
+
+    public function softDelete()
+    {
+    
+        // 論理削除
+        $this->update([
+            'flag_delete' => 1,
+        ]);
     }
 }

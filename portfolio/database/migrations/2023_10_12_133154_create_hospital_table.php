@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('hospitals', function (Blueprint $table) {
             $table->id('hospital_id');
             $table->text('hospital_name');
-            $table->text('hospital_phone_number');
-            $table->text('hospital_address');
-            $table->dateTime('previous_attend', $precision = 0);
-            $table->dateTime('next_attend', $precision = 0);
+            $table->text('hospital_phone_number')->nullable();
+            $table->text('hospital_address')->nullable();
+            $table->dateTime('previous_attend', $precision = 0)->nullable();
+            $table->dateTime('next_attend', $precision = 0)->nullable();
             $table->foreignId('department_id')->constrained('departments', 'department_id');
             $table->foreignId('id')->constrained('users', 'id');
-            $table->foreignId('previous_treatment_id')->constrained('treatments', 'treatment_id');
-            $table->foreignId('next_treatment_id')->constrained('treatments', 'treatment_id');
-            $table->softDeletes();
+            $table->foreignId('previous_treatment_id')->constrained('treatments', 'treatment_id')->default('1');
+            $table->foreignId('next_treatment_id')->constrained('treatments', 'treatment_id')->default('1');
+            $table->text('flag_delete')->default('0');
             $table->timestamps();
         });
     }
