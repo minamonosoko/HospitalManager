@@ -10,7 +10,9 @@ use App\Models\Department;
 use App\Models\Treatment;
 use Illuminate\Support\Facades\Auth;
 
-
+/**
+ * 病院コントローラー
+ */
 class HospitalController extends Controller
 {
     /**
@@ -29,6 +31,12 @@ class HospitalController extends Controller
         return view('hospital', compact('hospitals', 'medicines', 'departments', 'treatments'));
     }
 
+    /**
+     * 処理の分岐（登録編集削除）
+     *
+     * @param Request $request
+     * @return void
+     */
     public function action(Request $request)
     {
         $action = $request->input('action');
@@ -47,6 +55,12 @@ class HospitalController extends Controller
         return redirect()->route('hospital');
     }
 
+    /**
+     * 新規作成
+     *
+     * @param Request $request
+     * @return void
+     */
     public function create(Request $request)
     {
         // 取得：ログインユーザID
@@ -128,11 +142,15 @@ class HospitalController extends Controller
             $medicine = new Medicine;
             $medicine->createMedicine($medicine_new_name, $medicine_new_stock, $hospital_id);
         }
-
-        // return redirect()->route('hospital');
     }
 
 
+    /**
+     * 論理削除
+     *
+     * @param Request $request
+     * @return void
+     */
     private function softDelete(Request $request)
     {
         $hospital_id = $request->input('hospital_id');
