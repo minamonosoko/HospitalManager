@@ -46,8 +46,7 @@ class Hospital extends Model
     }
 
     public function softDelete()
-    {
-    
+    {    
         // 論理削除
         $this->update([
             'flag_delete' => 1,

@@ -20,7 +20,7 @@ class HospitalTableSeeder extends Seeder
             [
                 'hospital_name' => '佐藤医院',
                 'hospital_phone_number' => '000-0000-000',
-                'hospital_address' => '秋田県秋田市下新城中野4-20-13	',
+                'hospital_address' => '秋田県秋田市下新城中野4-20-13',
                 'previous_attend' => '2023-10-14T10:30',
                 'next_attend' => '2023-11-14T11:45',
                 'department_id' => '1',

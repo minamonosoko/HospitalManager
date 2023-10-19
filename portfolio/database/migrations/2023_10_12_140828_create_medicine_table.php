@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('medicine_name');
             $table->foreignId('hospital_id')->constrained('hospitals', 'hospital_id');
             $table->Integer('medicine_stock');
-            $table->softDeletes();
+            $table->text('flag_delete')->default('0');
             $table->timestamps();
         });
     }

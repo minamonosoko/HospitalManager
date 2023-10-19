@@ -106,13 +106,18 @@
                                 <div class="fs-5">
                                     ■服薬内容
                                 </div>
+
                                 @foreach($medicines as $key2 => $val2)
                                 @if($val->hospital_id === $val2->hospital_id)
                                 <div class="d-flex justify-content-between">
-                                    <div class="text-left">
-                                        <input type="text" name="medicine_name[{{ $val2->medicine_id }}]"
-                                            value="{{ $val2->medicine_name }}" accept-charset="UTF-8">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="medicine-delete[]" type="checkbox" value="{{ $val2->medicine_id }}">
+                                        <div class="text-left">
+                                            <input type="text" name="medicine_name[{{ $val2->medicine_id }}]"
+                                                value="{{ $val2->medicine_name }}" accept-charset="UTF-8">
+                                        </div>
                                     </div>
+
                                     <div class="text-right col-1">
                                         <input type="number" name="medicine[{{ $val2->medicine_id }}]"
                                             class="form-control form-control-sm" id="input-medicine-{{ $key2 }}"
@@ -121,6 +126,7 @@
                                 </div>
                                 @endif
                                 @endforeach
+
                                 <div class="d-flex justify-content-between">
                                     <div class="text-left">
                                         <input type="text" name="medicine_new_name" placeholder="新しい薬の名前を入力"
@@ -162,6 +168,7 @@
                             <div>
                                 <button type="submit" class="btn btn-primary btn-sm" name="action" value="update">更新</button>
                                 <button type="submit" class="btn btn-primary btn-sm" name="action" value="delete">削除</button>
+                                <button type="submit" class="btn btn-primary btn-sm" name="action" value="delete-medicine">チェックした薬を削除</button>
                             </div>
                         </div>
                     </div>

@@ -23,7 +23,7 @@ class Medicine extends Model
         'medicine_name',
         'hospital_id',
         'medicine_stock',
-        'deleted_at',
+        'flag_delete',
         'updated_at',
     ];
 
@@ -45,6 +45,14 @@ class Medicine extends Model
             'medicine_name' => $medicine_new_name,
             'hospital_id' => $hospital_id,
             'medicine_stock' => $medicine_new_stock,
+        ]);
+    }
+
+    public function softDelete()
+    {
+        // 論理削除
+        $this->update([
+            'flag_delete' => 1,
         ]);
     }
 }
