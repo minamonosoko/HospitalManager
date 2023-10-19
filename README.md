@@ -7,9 +7,26 @@ Laravel : 10.28.0
 Composer : 2.6.5
 
 ## 実行の手順（macOS）
-### XAMPPのインストール
+### 環境構築
+1. Homebrewのインストール  
+    以下のURLからインストール用のスクリプトをコピーし、ターミナルで実行する。
+    ```
+    https://brew.sh
+    ```
+2. PHPのインストール
+    ```
+    brew install php
+    ```
+3. Composerのインストール
+    ```
+    brew install composer
+    ```
+4. Node.jsのインストール
+    ```
+    brew install node
+    ```
 
-### リポジトリのクローン
+### プロジェクトの設定
 1. クローンする。
     ```
     git clone https://github.com/minamonosoko/HospitalManager.git
