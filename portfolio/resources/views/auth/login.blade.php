@@ -1,7 +1,10 @@
+
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+            {{-- <x-ajetstream ログイン ロゴuthentication-card-logo /> --}}
+            <img src="{{ asset('image/img_hospital.png') }}" class="img-logo" alt="title_image">
+
         </x-slot>
 
         <x-validation-errors class="mb-4" />
