@@ -9,6 +9,7 @@ use App\Models\Medicine;
 use App\Models\Department;
 use App\Models\Treatment;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\HospitalRequest;
 
 /**
  * 病院コントローラー
@@ -35,7 +36,7 @@ class HospitalController extends Controller
      * 処理の分岐（登録編集削除）
      *
      * @param Request $request
-     * @return void
+     * @return redirect()->route('hospital');
      */
     public function action(Request $request)
     {
@@ -65,10 +66,11 @@ class HospitalController extends Controller
      * @param Request $request
      * @return void
      */
-    public function create(Request $request)
+    public function create(HospitalRequest $request)
     {
         // 取得：ログインユーザID
         $user_id = Auth::id();
+
         // 削除：前回POST
         $request->session()->forget('post_data');
         // 取得：POST
@@ -88,7 +90,7 @@ class HospitalController extends Controller
 
             $hospital = new Hospital;
             var_dump($post_data);
-            $hospital->create($post_data);      
+            $hospital->create($post_data);
         }
 
         return redirect()->route('hospital');
