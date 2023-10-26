@@ -38,7 +38,7 @@ class HospitalController extends Controller
      * @param Request $request
      * @return redirect()->route('hospital');
      */
-    public function action(Request $request)
+    public function action(HospitalRequest $request)
     {
         $action = $request->input('action');
 
@@ -70,10 +70,9 @@ class HospitalController extends Controller
     {
         // 取得：ログインユーザID
         $user_id = Auth::id();
-
         // 削除：前回POST
         $request->session()->forget('post_data');
-        // 取得：POST
+        // // 取得：POST
         $post_data = $request->all();
         // 設定：Session
         foreach ($post_data as $key => $value) 
@@ -81,20 +80,26 @@ class HospitalController extends Controller
             $request->session()->push('post_data', ["key" => $key, "value" => $value]);
         }
 
-        if(isset($post_data['department_id']) && !empty($post_data['hospital_name']))
-        {
-            // ログインユーザIDを追加
-            $post_data['id'] = $user_id;
-            $post_data['previous_treatment_id'] = 1;
-            $post_data['next_treatment_id'] = 2;
+        $request->session()->put('action', 'create');
+        $validatedData = $request->validated();
 
-            $hospital = new Hospital;
-            var_dump($post_data);
-            $hospital->create($post_data);
+
+        if (empty($validatedData)) {
+            return redirect()->route('hospital')->withErrors('エラーが発生しました');
         }
+
+        // 追加のデータを準備
+        $validatedData['id'] = $user_id;
+        $validatedData['previous_treatment_id'] = 1;
+        $validatedData['next_treatment_id'] = 2;
+
+        // DBへの保存処理
+        $hospital = new Hospital;
+        $hospital->create($validatedData);
 
         return redirect()->route('hospital');
     }
+
 
     /**
      * 更新
@@ -102,7 +107,7 @@ class HospitalController extends Controller
      * @param Request $request
      * @return void
      */
-    private function update(Request $request)
+    private function update(HospitalRequest $request)
     {
         // 削除：前回POST
         $request->session()->forget('post_data');
@@ -112,6 +117,8 @@ class HospitalController extends Controller
         foreach ($post_data as $key => $value) {
             $request->session()->push('post_data', ["key" => $key, "value" => $value]);
         }
+
+        $request->merge(['action' => 'update']);
 
         ## 登録：Hospitalsテーブル
         $hospital_id = $request->input('hospital_id');

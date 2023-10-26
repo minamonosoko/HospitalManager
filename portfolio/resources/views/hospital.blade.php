@@ -212,7 +212,7 @@
                                             </div>
                                             <div class="text-right">
                                                 <input type="text" id="attend-previous-register" name="hospital_name"
-                                                    placeholder="">
+                                                    placeholder="病院名を入力">
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between">

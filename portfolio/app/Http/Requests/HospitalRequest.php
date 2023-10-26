@@ -21,27 +21,23 @@ class HospitalRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'hospital_name' => 'required',
-            'department_id' => 'required|not_in:0',
-        ];
+        // 初期化：バリデーションルール
+        $rules =[];
 
-        // $validate = [];
+        if($this->input('action') === 'update')
+        {
+            $rules['attend_previous'] = 'required';
+            $rules['attend_next'] = 'required|next_appointment_date:attend_previous';
+            \Log::info("HospitalRequest:update");
+        }
+        else
+        {
+            $rules['hospital_name'] = 'required';
+            $rules['department_id'] = 'required|not_in:0';
+        }
 
-        // $validate += [
-        //     'hospital_name' => [
-        //         'require'
-        //     ]
-        // ];
-        
-        // $validate += [
-        //     'department_id' => [
-        //         'required',
-        //         'not_in:0'
-        //     ]
-        // ];
-
-        // return $validate;
+        \Log::info($rules);
+        return $rules;
     }
 
     public function attributes()
