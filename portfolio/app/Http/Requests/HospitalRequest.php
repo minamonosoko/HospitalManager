@@ -21,23 +21,23 @@ class HospitalRequest extends FormRequest
      */
     public function rules(): array
     {
-        // 初期化：バリデーションルール
-        $rules =[];
+        \Log::info("HospitalRequest:action" . $this->input('action'));
 
-        if($this->input('action') === 'update')
-        {
-            $rules['attend_previous'] = 'required';
-            $rules['attend_next'] = 'required|next_appointment_date:attend_previous';
-            \Log::info("HospitalRequest:update");
-        }
-        else
-        {
-            $rules['hospital_name'] = 'required';
-            $rules['department_id'] = 'required|not_in:0';
-        }
+        $action = $this->input('action');
 
-        \Log::info($rules);
-        return $rules;
+        switch ($action) 
+        {
+            case 'update':
+                return $this->updateRules();
+            case 'delete':
+                return $this->deleteRules();
+            case 'delete-medicine':
+                return $this->deleteMedicineRules();
+            case 'create':
+                return $this->createRules();
+            default:
+                return [];
+        }
     }
 
     public function attributes()
@@ -47,8 +47,39 @@ class HospitalRequest extends FormRequest
         $attributes += [
             'hospital_name' => '病院名',
             'department_id' => '診療科',
+            'medicine-delete' => '薬',
         ];
 
         return $attributes;
+    }
+
+    public function updateRules()
+    {
+        return ([
+            'attend_previous' => 'required',
+            'attend_next' => 'required|next_appointment_date:attend_previous',
+        ]);
+    }
+
+    public function deleteRules()
+    {
+        return ([
+            'hospital_id' => 'required',
+        ]);
+    }
+
+    public function deleteMedicineRules()
+    {
+        return ([
+            'medicine-delete' => 'required',
+        ]);
+    }
+
+    public function createRules()
+    {
+        return ([
+            'hospital_name' => 'required',
+            'department_id' => 'required|not_in:0',
+        ]);
     }
 }

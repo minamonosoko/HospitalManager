@@ -97,6 +97,8 @@ class HospitalController extends Controller
         $hospital = new Hospital;
         $hospital->create($validatedData);
 
+        $request->session()->flash('success', '新しく病院が登録されました。');
+
         return redirect()->route('hospital');
     }
 
@@ -158,6 +160,9 @@ class HospitalController extends Controller
             $medicine = new Medicine;
             $medicine->createMedicine($medicine_new_name, $medicine_new_stock, $hospital_id);
         }
+
+        $request->session()->flash('success', '更新されました。');
+
     }
 
 
@@ -167,8 +172,10 @@ class HospitalController extends Controller
      * @param Request $request
      * @return void
      */
-    private function softDelete(Request $request)
+    private function softDelete(HospitalRequest $request)
     {
+        $request->merge(['action' => 'deleteHospital']);
+
         // 取得：ログインユーザID
         $user_id = Auth::id();
         // 削除：前回POST
@@ -185,6 +192,8 @@ class HospitalController extends Controller
         $hospital = Hospital::find($hospital_id);
 
         $hospital->softDelete();
+
+        $request->session()->flash('success', '病院が削除されました。');
     }
 
     /**
@@ -212,5 +221,7 @@ class HospitalController extends Controller
             $medicine = Medicine::find($val);
             $medicine->softDelete();
         }
+
+        $request->session()->flash('success', 'チェックした薬が削除されました。');
     }
 }

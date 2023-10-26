@@ -26,6 +26,11 @@
             </div>
         </div><!-- .error-wrapper -->
     @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="contents-wrapper d-flex">
         <div class="accordion w-100">
             @foreach($hospitals as $key => $val)
@@ -191,6 +196,7 @@
             <div class="create-wrapper">
                 <form method="POST" action="{{ route('hospital.create') }}" accept-charset="UTF-8">
                     @csrf
+                    <input type="hidden" name="action" value="create">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading-register">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
